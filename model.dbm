@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3" use-changelog="false" last-position="578,269" last-zoom="0.85" max-obj-count="6"
+	 default-schema="public" default-owner="postgres">
+<role name="dba"
+      superuser="true"
+      createdb="true"
+      createrole="true"
+      inherit="true"
+      login="true"
+      encrypted="true"
+      password="********">
+</role>
+
+<database name="liquibase" encoding="UTF8" lc-collate="Portuguese_Brazil.1252" lc-ctype="Portuguese_Brazil.1252" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="databasechangeloglock" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="260" y="280"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="locked" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="lockgranted">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="lockedby">
+		<type name="character varying" length="255"/>
+	</column>
+	<constraint name="databasechangeloglock_pkey" type="pk-constr" table="public.databasechangeloglock">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="databasechangelog" layer="0" collapse-mode="2" max-obj-count="16" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="260" y="420"/>
+	<column name="id" not-null="true">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="author" not-null="true">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="filename" not-null="true">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="dateexecuted" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="orderexecuted" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="exectype" not-null="true">
+		<type name="character varying" length="10"/>
+	</column>
+	<column name="md5sum">
+		<type name="character varying" length="35"/>
+	</column>
+	<column name="description">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="comments">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="tag">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="liquibase">
+		<type name="character varying" length="20"/>
+	</column>
+	<column name="contexts">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="labels">
+		<type name="character varying" length="255"/>
+	</column>
+	<column name="deployment_id">
+		<type name="character varying" length="10"/>
+	</column>
+</table>
+
+<table name="pessoa" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="760" y="880"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="250"/>
+	</column>
+	<column name="telefone">
+		<type name="character varying" length="11"/>
+	</column>
+	<column name="apelido">
+		<type name="varchar" length="250"/>
+	</column>
+	<constraint name="pessoa_pk" type="pk-constr" table="public.pessoa">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="animal" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1000" y="560"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome">
+		<type name="character varying" length="250"/>
+	</column>
+	<column name="id_raca" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_pessoa">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="animal_pk" type="pk-constr" table="public.animal">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="raca" layer="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1480" y="640"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="character varying" length="250"/>
+	</column>
+	<constraint name="raca_pk" type="pk-constr" table="public.raca">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="raca_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.raca" table="public.animal">
+	<columns names="id_raca" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="pessoa_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="SET NULL" ref-table="public.pessoa" table="public.animal">
+	<columns names="id_pessoa" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_animal_raca" type="relfk" layer="0"
+	 custom-color="#d252eb"
+	 src-table="public.animal"
+	 dst-table="public.raca" reference-fk="raca_fk"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_animal_pessoa" type="relfk" layer="0"
+	 custom-color="#e3a171"
+	 src-table="public.animal"
+	 dst-table="public.pessoa" reference-fk="pessoa_fk"
+	 src-required="false" dst-required="false"/>
+
+<permission>
+	<object name="public" type="schema"/>
+	<roles names="postgres"/>
+	<privileges create="true" usage="true"/>
+</permission>
+<permission>
+	<object name="public" type="schema"/>
+	<privileges create="true" usage="true"/>
+</permission>
+</dbmodel>
